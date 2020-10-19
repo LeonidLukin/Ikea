@@ -1,14 +1,14 @@
-import { getData } from './getData.js'
-
+import { getData } from './getData.js';
+import userData from './userData.js';
 const COUNTER = 6;
 
 
 const generateGoodsPage = () => {
-
     const mainHeader = document.querySelector('.main-header');
-    const goodsList = document.querySelector('.goods-list');
 
     const generateCards = (data) => {
+        const goodsList = document.querySelector('.goods-list');    
+        
         goodsList.textContent = '';
         if (!data.length) {
             const goods = document.querySelector('.goods');
@@ -53,7 +53,18 @@ const generateGoodsPage = () => {
                 </li>
             `)
         })
-    }
+
+        goodsList.addEventListener('click', e => {
+
+            const btnAddCard = e.target.closest('.btn-add-card');
+            if (btnAddCard) {
+                e.preventDefault();
+                userData.cartList = btnAddCard.dataset.idd;
+                console.log(userData.cartList);
+            }
+        })        
+    };
+    
 
     if (location.pathname.includes('goods') && location.search) {
         const search = decodeURI(location.search);
@@ -64,13 +75,14 @@ const generateGoodsPage = () => {
             getData.search(value, generateCards);
             mainHeader.textContent = `Поиск: ${value}`;
         } else if (prop === 'wishlist') {
-            getData.wishList(wishList, generateCards);
+            getData.wishList(userData.wishList, generateCards);
             mainHeader.textContent = `Список желаний`;
         } else if (prop === 'cat' || prop === 'subcat') {
             getData.category(prop, value, generateCards);
             mainHeader.textContent = value;
         }
     }
+
 };
 
 export default generateGoodsPage;

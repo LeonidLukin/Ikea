@@ -1,5 +1,6 @@
 import { catalog } from "./catalog.js";
 import { getData } from  "./getData.js";
+import userData from "./userData.js";
 
 const NEW_COUNT_ITEM = 6;
 
@@ -45,6 +46,26 @@ const generateItemPage = () => {
             goodItemItemEmpty.style.display = 'block';
             btnGood.style.display = 'none';
         }
+
+        const checkWishList = () => {
+            if (userData.wishList.includes(id)) {
+                btnAddWishlist.classList.add('contains-wishlist');
+            } else {
+                btnAddWishlist.classList.remove('contains-wishlist');
+            }
+        };
+
+        btnAddWishlist.addEventListener('click', () => {
+            userData.wishList = id;
+            checkWishList();
+        });
+
+        btnAddWishlist.addEventListener('click', () => {
+            userData.cartList = id;
+        })
+
+        checkWishList();
+
     };
 
     if (location.hash && location.pathname.includes('card')) {
